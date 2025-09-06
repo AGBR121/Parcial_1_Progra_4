@@ -1,12 +1,12 @@
 from api import Backend
+from ui import Frontend
 
 def main():
-    df = Backend.cargar_datos()
+    datosRecibidos = Frontend.imprimirMenu()
+    datosTabla = Backend.obtenerDatos()
 
-    col_ph = "pH agua:suelo 2,5:1,0"
-
-    print("\n✅ Valores corregidos de pH:")
-    print(df[[col_ph]].head(50))
+    print("\nDatos corregidos:")
+    print(datosTabla)  
 
 if __name__ == "__main__":
     main()
