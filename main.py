@@ -3,8 +3,8 @@ from ui import Frontend
 
 def main():
     datosRecibidos = Frontend.recibirDatos()
-    medianas = Backend.filtrarDatos(datosRecibidos)
-    Frontend.imprimirResultados(datosRecibidos, medianas)
+    resultados = Backend.filtrarDatos(datosRecibidos)
+    Frontend.imprimirResultados(resultados)
 
 
 if __name__ == "__main__":

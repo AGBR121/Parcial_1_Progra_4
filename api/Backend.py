@@ -28,6 +28,7 @@ def obtenerDatos(ruta_excel="resultado_laboratorio_suelo.xlsx"):
 
     tablaSuelo = tablaSuelo.map(corregirValores)
 
+    #hacer más sencillo el nombre de algunas columnas
     def renombrarColumnas(tabla):
         return tabla.rename(columns={
             "pH agua:suelo 2,5:1,0": "pH",
@@ -37,6 +38,7 @@ def obtenerDatos(ruta_excel="resultado_laboratorio_suelo.xlsx"):
 
     tablaSuelo = renombrarColumnas(tablaSuelo)
 
+    #arreglar excel
     tablaSuelo.to_excel(ruta_excel, index=False)
 
     columnaNecesarias = [
@@ -67,4 +69,14 @@ def filtrarDatos(filtros):
     
     medianas = resultados[["pH", "Fosforo", "Potasio"]].median()
 
-    return medianas
+    topografias = ", ".join(resultados["Topografia"].unique())
+
+    return (
+        departamento,
+        municipio,
+        cultivo,
+        topografias,
+        medianas["pH"],
+        medianas["Fosforo"],
+        medianas["Potasio"]
+    )
