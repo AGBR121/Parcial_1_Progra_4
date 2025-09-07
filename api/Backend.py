@@ -2,9 +2,9 @@ import pandas as pd
 
 def obtenerDatos(ruta_excel="resultado_laboratorio_suelo.xlsx"):
 
-    tabla_suelo = pd.read_excel(ruta_excel)
+    tablaSuelo = pd.read_excel(ruta_excel)
 
-    tabla_suelo.columns = tabla_suelo.columns.str.strip()
+    tablaSuelo.columns = tablaSuelo.columns.str.strip()
 
     def corregirValores(valor):
         if pd.isna(valor):
@@ -13,22 +13,40 @@ def obtenerDatos(ruta_excel="resultado_laboratorio_suelo.xlsx"):
         if isinstance(valor, (int, float)):
             return valor
 
-        valor_str = str(valor).strip()
+        valorStr = str(valor).strip()
 
         # Cambia tipo fecha a tipo número
-        if "-" in valor_str or ":" in valor_str:
-            fecha = pd.to_datetime(valor_str, errors="coerce")
+        if "-" in valorStr or ":" in valorStr:
+            fecha = pd.to_datetime(valorStr, errors="coerce")
             if pd.notna(fecha):
                 return float(f"{fecha.day}.{fecha.month}")
 
         try:
-            return float(valor_str.replace(",", "."))
+            return float(valorStr.replace(",", "."))
         except:
-            return valor_str
+            return valorStr
 
-    tabla_suelo = tabla_suelo.applymap(corregirValores)
+    tablaSuelo = tablaSuelo.applymap(corregirValores)
 
-    tabla_suelo.to_excel(ruta_excel, index=False)
+    def renombrarColumnas(tabla):
+        return tabla.rename(columns={
+            "pH agua:suelo 2,5:1,0": "pH",
+            "Fósforo (P) Bray II mg/kg": "Fosforo",
+            "Potasio (K) intercambiable cmol(+)/kg": "Potasio"
+        })
 
-    return tabla_suelo
+    tablaSuelo = renombrarColumnas(tablaSuelo)
 
+    tablaSuelo.to_excel(ruta_excel, index=False)
+
+    columnaNecesarias = [
+        "Departamento",
+        "Municipio",
+        "Cultivo",
+        "Topografia",
+        "pH",
+        "Fosforo",
+        "Potasio"
+    ]
+
+    return tablaSuelo[columnaNecesarias]

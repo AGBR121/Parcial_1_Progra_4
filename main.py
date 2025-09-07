@@ -2,7 +2,7 @@ from api import Backend
 from ui import Frontend
 
 def main():
-    datosRecibidos = Frontend.imprimirMenu()
+    #datosRecibidos = Frontend.recibirDatos()
     datosTabla = Backend.obtenerDatos()
 
     print("\nDatos corregidos:")
