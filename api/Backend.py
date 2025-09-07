@@ -15,6 +15,8 @@ def obtenerDatos(ruta_excel="resultado_laboratorio_suelo.xlsx"):
 
         valorStr = str(valor).strip()
 
+        valorStr = valorStr.replace("<", "").replace(">", "").strip()
+
         # Cambia tipo fecha a tipo número
         if "-" in valorStr or ":" in valorStr:
             fecha = pd.to_datetime(valorStr, errors="coerce")
